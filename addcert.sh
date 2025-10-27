@@ -25,16 +25,6 @@ if command -v /usr/libexec/java_home &> /dev/null; then
   JAVA_HOMES=( $(/usr/libexec/java_home -V 2>&1 | grep -E '\/Contents\/Home' | tr -d ',' | xargs) )
 fi
 
-# Linux: finding possible paths
-if [ -d "/usr/lib/jvm" ]; then
-  JAVA_HOMES+=( $(find /usr/lib/jvm -type d -name "*jre*" -o -name "*jdk*" | xargs) )
-fi
-
-# Additionale: checking /opt
-if [ -d "/opt" ]; then
-  JAVA_HOMES+=( $(find /opt -type d -name "*jre*" -o -name "*jdk*" | xargs) )
-fi
-
 # Unique path
 JAVA_HOMES=$(printf '%s\n' "${JAVA_HOMES[@]}" | sort -u)
 
@@ -59,7 +49,7 @@ for JAVA_HOME in "${JAVA_HOMES[@]}"; do
       echo "Error: unable to add $JAVA_HOME"
     fi
   else
-    echo "Warning: cacerts not found $JAVA_HOME — skipped."
+    echo "Warning: cacerts not found $JAVA_HOME — skipped"
   fi
 done
 
