@@ -25,6 +25,11 @@ if command -v /usr/libexec/java_home &> /dev/null; then
   JAVA_HOMES=( $(/usr/libexec/java_home -V 2>&1 | grep -E '\/Contents\/Home' | tr -d ',' | xargs) )
 fi
 
+# Find additional IDE jre in ~/Library/Java
+if [ -d "/Users/ruaspdj/Library/Java/" ]; then
+	JAVA_HOMES+=( $(find /Users/ruaspdj/Library/Java/ -name "*jbr*" -type d | xargs) )
+fi
+
 # Unique path
 JAVA_HOMES=$(printf '%s\n' "${JAVA_HOMES[@]}" | sort -u)
 
